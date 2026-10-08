@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "MyStore",
+    "slug": "mystore",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "scheme": "mystore",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.mystore.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1B4332"
+      },
+      "package": "com.mystore.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
