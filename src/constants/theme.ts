@@ -1,0 +1,52 @@
+export const THEME = {
+  colors: {
+    primary: {
+      DEFAULT: '#1B4332',
+      50: '#f0fdf4',
+      100: '#dcfce7',
+      200: '#bbf7d0',
+      300: '#86efac',
+      400: '#4ade80',
+      500: '#22c55e',
+      600: '#16a34a',
+      700: '#15803d',
+      800: '#166534',
+      900: '#1B4332',
+    },
+    accent: '#D4A017',
+    surface: '#F9F7F4',
+    card: '#FFFFFF',
+    background: '#F8FAFC',
+    text: {
+      primary: '#111827',
+      secondary: '#4B5563',
+      muted: '#9CA3AF',
+      white: '#FFFFFF',
+    },
+    border: '#E5E7EB',
+    borderLight: '#F3F4F6',
+    status: {
+      success: '#16A34A',
+      successBg: '#F0FDF4',
+      warning: '#D97706',
+      warningBg: '#FFFBEB',
+      error: '#DC2626',
+      errorBg: '#FEF2F2',
+      info: '#2563EB',
+      infoBg: '#EFF6FF',
+    },
+  },
+} as const;
+
+export const ORDER_STATUS_MAP: Record<string, { bg: string; text: string; icon: string }> = {
+  'Order Placed': { bg: '#EFF6FF', text: '#2563EB', icon: 'receipt-outline' },
+  'Order Confirmed': { bg: '#EFF6FF', text: '#2563EB', icon: 'checkmark-circle-outline' },
+  'Processing': { bg: '#EFF6FF', text: '#2563EB', icon: 'time-outline' },
+  'Preparing': { bg: '#EFF6FF', text: '#2563EB', icon: 'construct-outline' },
+  'Packed': { bg: '#F5F3FF', text: '#7C3AED', icon: 'cube-outline' },
+  'Partner Assigned': { bg: '#F5F3FF', text: '#7C3AED', icon: 'person-outline' },
+  'Picked Up': { bg: '#FFFBEB', text: '#D97706', icon: 'bicycle-outline' },
+  'Out for Delivery': { bg: '#FFFBEB', text: '#D97706', icon: 'navigate-outline' },
+  'Delivered': { bg: '#F0FDF4', text: '#16A34A', icon: 'checkmark-done-circle-outline' },
+  'Cancelled': { bg: '#FEF2F2', text: '#DC2626', icon: 'close-circle-outline' },
+};

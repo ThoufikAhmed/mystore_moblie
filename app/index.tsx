@@ -1,23 +1,22 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../src/context/AuthContext';
+import { useAuth } from '../src/context';
 import { Redirect } from 'expo-router';
 
 export default function SplashScreen() {
   const { isAuthenticated, isLoading } = useAuth();
-  const scale = useRef(new Animated.Value(0)).current;
-  const opacity = useRef(new Animated.Value(0)).current;
+  const [scale] = useState(() => new Animated.Value(0));
+  const [opacity] = useState(() => new Animated.Value(0));
 
   useEffect(() => {
     Animated.parallel([
       Animated.spring(scale, { toValue: 1, tension: 10, friction: 2, useNativeDriver: true }),
       Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
     ]).start();
-  }, []);
+  }, [opacity, scale]);
 
-  // Use declarative redirect after loading — avoids premature router.replace calls
   if (!isLoading) {
     if (isAuthenticated) return <Redirect href="/(tabs)" />;
     return <Redirect href="/(auth)/login" />;

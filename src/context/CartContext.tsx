@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Product, CartItem } from '../data/mockData';
+import { Product, CartItem } from '../types';
+import { APP_CONFIG } from '../constants';
 
-interface CartContextType {
+export interface CartContextType {
   cart: CartItem[];
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
@@ -9,6 +10,9 @@ interface CartContextType {
   clearCart: () => void;
   cartTotal: number;
   cartCount: number;
+  discountTotal: number;
+  deliveryCharge: number;
+  grandTotal: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -55,9 +59,38 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
+  const discountTotal = Math.round(
+    cart.reduce(
+      (sum, item) =>
+        sum +
+        ((item.product.originalPrice ?? item.product.price) -
+          item.product.price) *
+          item.quantity,
+      0
+    )
+  );
+
+  const deliveryCharge =
+    cartTotal === 0 || cartTotal >= APP_CONFIG.freeDeliveryThreshold
+      ? 0
+      : APP_CONFIG.standardDeliveryFee;
+
+  const grandTotal = cartTotal + deliveryCharge;
+
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal, cartCount }}
+      value={{
+        cart,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        cartTotal,
+        cartCount,
+        discountTotal,
+        deliveryCharge,
+        grandTotal,
+      }}
     >
       {children}
     </CartContext.Provider>

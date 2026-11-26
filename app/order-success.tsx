@@ -1,16 +1,16 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Animated } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-
-// Generate a random order ID
-const ORDER_ID = `ORD${Math.floor(10000 + Math.random() * 90000)}`;
+import { Button } from '../src/components';
+import { generateOrderId } from '../src/utils';
 
 export default function OrderSuccessScreen() {
-  const scale = useRef(new Animated.Value(0)).current;
-  const opacity = useRef(new Animated.Value(0)).current;
-  const slide = useRef(new Animated.Value(40)).current;
+  const [orderId] = useState(() => generateOrderId());
+  const [scale] = useState(() => new Animated.Value(0));
+  const [opacity] = useState(() => new Animated.Value(0));
+  const [slide] = useState(() => new Animated.Value(40));
 
   useEffect(() => {
     Animated.sequence([
@@ -25,7 +25,7 @@ export default function OrderSuccessScreen() {
         Animated.timing(slide, { toValue: 0, duration: 400, useNativeDriver: true }),
       ]),
     ]).start();
-  }, []);
+  }, [opacity, scale, slide]);
 
   return (
     <SafeAreaView className="flex-1 bg-white items-center justify-center px-8">
@@ -37,8 +37,10 @@ export default function OrderSuccessScreen() {
       </Animated.View>
 
       <Animated.View style={{ opacity, transform: [{ translateY: slide }] }} className="items-center w-full">
-        <Text className="text-gray-900 font-extrabold text-3xl mb-2 text-center">Order Placed!</Text>
-        <Text className="text-gray-500 font-medium text-center leading-6 mb-10">
+        <Text className="text-gray-900 font-extrabold text-3xl mb-2 text-center">
+          Order Placed!
+        </Text>
+        <Text className="text-gray-500 font-medium text-center leading-6 mb-8">
           Yay! Your order has been placed successfully and will be delivered soon.
         </Text>
 
@@ -46,7 +48,7 @@ export default function OrderSuccessScreen() {
         <View className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-5 mb-8 gap-4">
           <View className="flex-row justify-between items-center">
             <Text className="text-gray-500 font-medium">Order ID</Text>
-            <Text className="text-gray-900 font-extrabold">#{ORDER_ID}</Text>
+            <Text className="text-gray-900 font-extrabold">#{orderId}</Text>
           </View>
           <View className="border-t border-dashed border-gray-200" />
           <View className="flex-row justify-between items-center">
@@ -67,20 +69,29 @@ export default function OrderSuccessScreen() {
         </View>
 
         {/* CTA Buttons */}
-        <TouchableOpacity
-          className="w-full bg-green-600 h-14 rounded-2xl items-center justify-center flex-row gap-2 shadow-sm mb-3"
-          onPress={() => router.push(`/order-details/${ORDER_ID}`)}
-        >
-          <Ionicons name="cube-outline" size={20} color="white" />
-          <Text className="text-white font-extrabold text-base">Track My Order</Text>
-        </TouchableOpacity>
+        <View className="w-full gap-3">
+          <Button
+            title="Track My Order"
+            leftIcon="cube-outline"
+            size="lg"
+            onPress={() => router.push(`/order-details/${orderId}`)}
+          />
 
-        <TouchableOpacity
-          className="w-full h-14 rounded-2xl items-center justify-center border-2 border-green-100"
-          onPress={() => router.replace('/(tabs)')}
-        >
-          <Text className="text-green-700 font-extrabold text-base">Continue Shopping</Text>
-        </TouchableOpacity>
+          <Button
+            title="View All Orders"
+            leftIcon="receipt-outline"
+            variant="secondary"
+            size="md"
+            onPress={() => router.navigate('/orders')}
+          />
+
+          <Button
+            title="Continue Shopping"
+            variant="outline"
+            size="md"
+            onPress={() => router.navigate('/')}
+          />
+        </View>
       </Animated.View>
     </SafeAreaView>
   );

@@ -9,21 +9,34 @@
     "scheme": "mystore",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mystore.app"
+      "bundleIdentifier": "com.mystore.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "MyStore needs access to your location to display live tracking on the map."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#1B4332"
       },
-      "package": "com.mystore.app"
+      "package": "com.mystore.app",
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show your live position on the delivery map."
+        }
+      ]
     ]
   }
 }
